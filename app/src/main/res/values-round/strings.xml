@@ -1,3 +1,12 @@
 <resources>
+    <string name="laps">Laps</string>
+    <string name="laps_placeholder">43</string>
+    <string name="lap_time">Lap time</string>
+    <string name="lap_time_placeholder">30.24</string>
+    <string name="lap_time_compare">▲</string>
+    <string name="total_time">Total time</string>
+    <string name="total_time_placeholder">52:30.23</string>
     <string name="hello_world">Hello Round World!</string>
+    <string name="arrow_up">^</string>
+    <string name="arrow_down">˅</string>
 </resources>
