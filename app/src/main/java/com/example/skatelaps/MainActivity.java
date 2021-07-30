@@ -2,6 +2,8 @@ package com.example.skatelaps;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.wearable.activity.WearableActivity;
@@ -17,6 +19,7 @@ import com.android.volley.toolbox.Volley;
 import java.math.BigDecimal;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class MainActivity extends WearableActivity {
 
@@ -25,7 +28,11 @@ public class MainActivity extends WearableActivity {
     private TextView textLapTime;
     private TextView textTotalTime;
     private TextView textCompareToPreviousLap;
+    private TextView textFastestLapTime;
     private Boolean isFirstRequest = true;
+    SensorManager mSensorManager;
+    HRListener hrEventListener;
+    LinkedBlockingQueue readingsQueue = new LinkedBlockingQueue();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +46,10 @@ public class MainActivity extends WearableActivity {
         textLapTime = (TextView) findViewById(R.id.lap_time_placeholder);
         textTotalTime = (TextView) findViewById(R.id.total_time_placeholder);
         textCompareToPreviousLap = (TextView) findViewById(R.id.lap_time_compare);
+        textFastestLapTime = (TextView) findViewById(R.id.fastest_lap_time_placeholder);
+
+        hrEventListener = new HRListener((TextView) findViewById(R.id.hr), (TextView) findViewById(R.id.hr_max), readingsQueue);
+        getStepCount();
 
         final String url = "http://vinksite.com/LapsSubs/Cmon.php?uid=" + transponder;
         final RequestQueue queue = Volley.newRequestQueue(this);
@@ -65,6 +76,7 @@ public class MainActivity extends WearableActivity {
                             textLaps.setText(String.valueOf(totalLaps));
                             textLapTime.setText(String.valueOf(lastLap));
                             textTotalTime.setText(secondsToMinutes(result[4]));
+                            textFastestLapTime.setText(String.valueOf(result[3]));
 
                             if(lastLap < secondLastLap) {
                                 textCompareToPreviousLap.setText("▼");
@@ -110,6 +122,15 @@ public class MainActivity extends WearableActivity {
         return bd.floatValue();
     }
 
+    protected void onStop() {
+        mSensorManager.unregisterListener(hrEventListener);
+        super.onStop();
+    }
 
+    private void getStepCount() {
+        mSensorManager = ((SensorManager)getSystemService(SENSOR_SERVICE));
+        Sensor mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
+        mSensorManager.registerListener(hrEventListener, mHeartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
 
 }

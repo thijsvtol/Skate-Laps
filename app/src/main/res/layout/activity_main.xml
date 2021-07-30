@@ -9,20 +9,20 @@
     tools:context=".MainActivity"
     tools:deviceIds="wear">
 
+    <!--Total laps-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/inner_frame_layout_padding"
-        app:boxedEdges="all">
+        android:padding="@dimen/inner_frame_layout_padding">
 
         <TextView
             android:id="@+id/laps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="45px"
+            android:layout_marginTop="30dp"
             android:text="@string/laps"
             android:textAlignment="center"
-        />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/laps_placeholder"
@@ -30,59 +30,121 @@
             android:layout_height="wrap_content"
             android:text="@string/laps_placeholder"
             android:textAlignment="center"
-            android:textSize="40px" />
+            android:textSize="26sp"
+            android:textStyle="bold"/>
 
     </FrameLayout>
+
+    <!--HR and current lap-->
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp"
+        android:paddingLeft="20dp">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp">
+
+            <TextView
+                android:id="@+id/hr"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:text="173♥"
+                android:textAlignment="textEnd"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/hr_avg"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="Avg. 143"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textStyle="italic"/>
+
+
+            <TextView
+                android:id="@+id/hr_max"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="33dp"
+                android:text="Max. 210"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textStyle="italic"/>
+
+        </FrameLayout>
+
+
+
+        <!--Current laps-->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/fastest_lap_time_placeholder"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/box_inset_layout_padding"
+                android:text="28.434"
+                android:textAlignment="center"
+                android:textColor="#FBC02D"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/lap_time"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/lap_time"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/lap_time_placeholder"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/lap_time_placeholder"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/lap_time_compare"
+                android:layout_width="12dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="70dp"
+                android:layout_marginTop="9dp"
+                android:text="@string/lap_time_compare"
+                android:textAlignment="center"
+                android:textColor="@color/dark_red"
+                android:textSize="20sp" />
+
+        </FrameLayout>
+
+    </FrameLayout>
+
+    <!--Total time-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80px"
-        android:padding="@dimen/inner_frame_layout_padding"
-        app:boxedEdges="all">
-
-        <TextView
-            android:id="@+id/lap_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="45px"
-            android:text="@string/lap_time"
-            android:textAlignment="center"
-            />
-
-        <TextView
-            android:id="@+id/lap_time_placeholder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lap_time_placeholder"
-            android:textAlignment="center"
-            android:textSize="40px" />
-
-        <TextView
-            android:id="@+id/lap_time_compare"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="140px"
-            android:textColor="@color/dark_red"
-            android:text="@string/lap_time_compare"
-            android:textAlignment="center"
-            android:textSize="40px" />
-
-    </FrameLayout>
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="170px"
-        android:padding="@dimen/inner_frame_layout_padding"
-        app:boxedEdges="all">
+        android:layout_marginTop="120dp"
+        android:padding="@dimen/inner_frame_layout_padding">
 
         <TextView
             android:id="@+id/total_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="45px"
+            android:layout_marginTop="30dp"
             android:text="@string/total_time"
-            android:textAlignment="center"
-            />
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/total_time_placeholder"
@@ -90,7 +152,8 @@
             android:layout_height="wrap_content"
             android:text="@string/total_time_placeholder"
             android:textAlignment="center"
-            android:textSize="40px" />
+            android:textSize="26sp"
+            android:textStyle="bold"/>
 
     </FrameLayout>
 </androidx.wear.widget.BoxInsetLayout>

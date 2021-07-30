@@ -7,7 +7,7 @@
     <string name="laps">Laps</string>
     <string name="laps_placeholder">0</string>
     <string name="lap_time">Lap time</string>
-    <string name="lap_time_placeholder">30.24</string>
+    <string name="lap_time_placeholder">30.245</string>
     <string name="lap_time_compare">▲</string>
     <string name="total_time">Total time</string>
     <string name="total_time_placeholder">52:30.23</string>
