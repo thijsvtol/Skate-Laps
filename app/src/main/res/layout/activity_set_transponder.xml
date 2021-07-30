@@ -83,7 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/inner_frame_layout_padding"
-        android:layout_marginTop="100px"
+        android:layout_marginTop="70px"
         app:boxedEdges="all">
 
         <TextView
@@ -154,7 +154,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/inner_frame_layout_padding"
-        android:layout_marginTop="200px"
+        android:layout_marginTop="140px"
         app:boxedEdges="all">
 
         <Button
@@ -220,4 +220,17 @@
             android:text="@string/arrow_down" />
 
     </FrameLayout>
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="150px"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Save"
+        android:padding="@dimen/inner_frame_layout_padding"
+        android:layout_marginTop="200px"
+        android:layout_marginLeft="55px"
+        android:background="@color/blue_a400"
+        app:boxedEdges="all" />
+
 </androidx.wear.widget.BoxInsetLayout>

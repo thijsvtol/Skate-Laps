@@ -5,7 +5,7 @@
     values-round/strings.xml for round devices.
     -->
     <string name="laps">Laps</string>
-    <string name="laps_placeholder">43</string>
+    <string name="laps_placeholder">0</string>
     <string name="lap_time">Lap time</string>
     <string name="lap_time_placeholder">30.24</string>
     <string name="lap_time_compare">▲</string>
