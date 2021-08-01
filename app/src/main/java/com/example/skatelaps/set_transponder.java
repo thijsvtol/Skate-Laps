@@ -1,6 +1,7 @@
 package com.example.skatelaps;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class set_transponder extends WearableActivity {
+
+    public static final String myPref = "preferenceName";
 
     private Button btnSave;
     private EditText editTextTransponder;
@@ -20,6 +23,9 @@ public class set_transponder extends WearableActivity {
 
         btnSave = (Button) findViewById(R.id.button_save);
         editTextTransponder = (EditText) findViewById(R.id.editTextTransponder);
+        if (!getPreferenceValue().equals("TheDefaultValueIfNoValueFoundOfThisKey")) {
+            editTextTransponder.setText(getPreferenceValue());
+        }
 
         // Enables Always-on
         setAmbientEnabled();
@@ -33,6 +39,8 @@ public class set_transponder extends WearableActivity {
                 System.out.println(transponderNumber);
 
                 if (transponderNumber.length() == 8) {
+                    writeToPreference(transponderNumber);
+
                     Intent i = new Intent(set_transponder.this, MainActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("transponder", transponderNumber);
@@ -45,5 +53,19 @@ public class set_transponder extends WearableActivity {
             }
         });
     }
+    public String getPreferenceValue()
+    {
+        SharedPreferences sp = getSharedPreferences(myPref,0);
+        String str = sp.getString("transponder","TheDefaultValueIfNoValueFoundOfThisKey");
+        return str;
+    }
+
+    public void writeToPreference(String thePreference)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences(myPref,0).edit();
+        editor.putString("transponder", thePreference);
+        editor.commit();
+    }
+
 
 }
