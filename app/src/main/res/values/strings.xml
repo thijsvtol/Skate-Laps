@@ -10,7 +10,7 @@
     <string name="lap_time_placeholder">30.245</string>
     <string name="lap_time_compare">▲</string>
     <string name="total_time">Total time</string>
-    <string name="total_time_placeholder">52:30.23</string>
+    <string name="total_time_placeholder">2:30.23</string>
     <string name="title_activity_set_transponder">set_transponder</string>
     <!--
     This string is used for square devices and overridden by hello_world in

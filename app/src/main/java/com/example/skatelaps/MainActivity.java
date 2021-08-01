@@ -72,11 +72,11 @@ public class MainActivity extends WearableActivity {
 
                             float lastLap = Float.valueOf(laps[totalLaps - 1]);
                             float secondLastLap = Float.valueOf(laps[totalLaps - 2]);
-                            String fastestLap = result[12];
+                            String fastestLap = result[3];
                             textLaps.setText(String.valueOf(totalLaps));
-                            textLapTime.setText(String.valueOf(lastLap));
+                            textLapTime.setText(String.valueOf(round(Float.valueOf(lastLap), 3)));
                             textTotalTime.setText(secondsToMinutes(result[4]));
-                            textFastestLapTime.setText(String.valueOf(result[3]));
+                            textFastestLapTime.setText(String.valueOf(round(Float.valueOf(fastestLap), 3)));
 
                             if(lastLap < secondLastLap) {
                                 textCompareToPreviousLap.setText("▼");
@@ -98,9 +98,8 @@ public class MainActivity extends WearableActivity {
             @Override
             public void run() {
                 queue.add(stringRequest);
-                System.out.println("callie");
             }
-        }, 0, 50000);
+        }, 0, 5000);
 
         // Enables Always-on
         setAmbientEnabled();
@@ -108,12 +107,18 @@ public class MainActivity extends WearableActivity {
 
     private String secondsToMinutes(String seconds) {
         float t = Float.valueOf(seconds);
-        int minutes = (int) (t / 60);
-        float s = t % 60;
-        if (s < 10) {
-            seconds = "0" + seconds;
+        int hours = (int) (t / 3600);
+        int remainder = (int) t - hours * 3600;
+        int minutes = remainder / 60;
+        remainder = remainder - minutes * 60;
+        int s = remainder;
+
+        String m = String.valueOf(minutes);
+        seconds = s < 10 ? "0" + s : String.valueOf(s);
+        if (minutes < 10) {
+            m = "0" + m;
         }
-        return minutes + ":" + round(s, 2);
+        return hours < 1 ? m + ":" + seconds : hours + ":" + m + ":" + seconds;
     }
 
     private static float round(float d, int decimalPlace) {
