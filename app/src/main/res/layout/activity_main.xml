@@ -5,94 +5,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_grey"
-    android:padding="@dimen/box_inset_layout_padding"
     tools:context=".MainActivity"
-    tools:deviceIds="wear">
+    tools:deviceIds="wear"
+    android:padding="5dp">
 
     <!--Total laps-->
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/inner_frame_layout_padding">
-
-        <TextView
-            android:id="@+id/laps"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="@string/laps"
-            android:textAlignment="center"
-            android:textSize="14sp" />
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/laps_placeholder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:text="@string/laps_placeholder"
             android:textAlignment="center"
             android:textSize="26sp"
             android:textStyle="bold"
             android:clickable="true"/>
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/laps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/laps"
+            android:textAlignment="center"
+            android:layout_marginTop="-6dp"
+            android:textSize="14sp" />
+
+    </LinearLayout>
 
     <!--HR and current lap-->
-    <FrameLayout
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="65dp"
-        android:paddingLeft="20dp">
-
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="100dp">
-
-            <TextView
-                android:id="@+id/hr"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:text="173♥"
-                android:textAlignment="textEnd"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/hr_avg"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
-                android:text="Avg. 143"
-                android:textAlignment="center"
-                android:textSize="12sp"
-                android:textStyle="italic"/>
-
-
-            <TextView
-                android:id="@+id/hr_max"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="33dp"
-                android:text="Max. 210"
-                android:textAlignment="center"
-                android:textSize="12sp"
-                android:textStyle="italic"/>
-
-        </FrameLayout>
-
-
+        android:gravity="center_horizontal"
+        android:showDividers="middle">
 
         <!--Current laps-->
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp">
 
             <TextView
                 android:id="@+id/fastest_lap_time_placeholder"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/box_inset_layout_padding"
                 android:text="28.434"
                 android:textAlignment="center"
                 android:textColor="#FBC02D"
@@ -130,22 +93,52 @@
 
         </FrameLayout>
 
-    </FrameLayout>
+        <!--HR-->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/hr"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:text="173♥"
+                android:textAlignment="textEnd"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/hr_avg"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="Avg. 143"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textStyle="italic"/>
+
+
+            <TextView
+                android:id="@+id/hr_max"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="33dp"
+                android:text="Max. 210"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textStyle="italic"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
 
     <!--Total time-->
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="120dp"
-        android:padding="@dimen/inner_frame_layout_padding">
-
-        <TextView
-            android:id="@+id/total_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="@string/total_time"
-            android:textAlignment="center" />
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
         <TextView
             android:id="@+id/total_time_placeholder"
@@ -156,5 +149,14 @@
             android:textSize="26sp"
             android:textStyle="bold"/>
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/total_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/total_time"
+            android:layout_marginTop="-6dp"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
 </androidx.wear.widget.BoxInsetLayout>
