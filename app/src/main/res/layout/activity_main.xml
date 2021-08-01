@@ -31,7 +31,8 @@
             android:text="@string/laps_placeholder"
             android:textAlignment="center"
             android:textSize="26sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:clickable="true"/>
 
     </FrameLayout>
 

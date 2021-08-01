@@ -1,12 +1,15 @@
 package com.example.skatelaps;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.wearable.activity.WearableActivity;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -23,13 +26,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class MainActivity extends WearableActivity {
 
-    private static final String TAG = "MainActivity";
     private TextView textLaps;
     private TextView textLapTime;
     private TextView textTotalTime;
     private TextView textCompareToPreviousLap;
     private TextView textFastestLapTime;
     private Boolean isFirstRequest = true;
+    private EditText editTransponder;
+    private String[] laps;
     SensorManager mSensorManager;
     HRListener hrEventListener;
     LinkedBlockingQueue readingsQueue = new LinkedBlockingQueue();
@@ -61,36 +65,39 @@ public class MainActivity extends WearableActivity {
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
                         String[] result = response.split(";");
-                        String[] laps = result[12].split("#");
+                        laps = result[12].split("#");
                         int totalLaps = laps.length;
 
-                        if(totalLaps > Integer.valueOf(textLaps.getText().toString()) || isFirstRequest) {
+                        if(totalLaps > Integer.parseInt(textLaps.getText().toString()) || isFirstRequest) {
                             // Get instance of Vibrator from current Context an vibrate 0.5s
                             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                             v.vibrate(500);
 
+                            try {
+                                float lastLap = Float.parseFloat(laps[totalLaps - 1]);
+                                float secondLastLap = Float.parseFloat(laps[totalLaps - 2]);
+                                String fastestLap = result[3];
+                                textLaps.setText(String.valueOf(totalLaps));
+                                textLapTime.setText(String.valueOf(round(lastLap, 3)));
+                                textTotalTime.setText(secondsToMinutes(result[4]));
+                                textFastestLapTime.setText(String.valueOf(round(Float.parseFloat(fastestLap), 3)));
 
-                            float lastLap = Float.valueOf(laps[totalLaps - 1]);
-                            float secondLastLap = Float.valueOf(laps[totalLaps - 2]);
-                            String fastestLap = result[3];
-                            textLaps.setText(String.valueOf(totalLaps));
-                            textLapTime.setText(String.valueOf(round(Float.valueOf(lastLap), 3)));
-                            textTotalTime.setText(secondsToMinutes(result[4]));
-                            textFastestLapTime.setText(String.valueOf(round(Float.valueOf(fastestLap), 3)));
-
-                            if(lastLap < secondLastLap) {
-                                textCompareToPreviousLap.setText("▼");
-                                textCompareToPreviousLap.setTextColor(Color.GREEN);
-                            } else {
-                                textCompareToPreviousLap.setText("▲");
-                                textCompareToPreviousLap.setTextColor(Color.RED);
+                                if(lastLap < secondLastLap) {
+                                    textCompareToPreviousLap.setText("▼");
+                                    textCompareToPreviousLap.setTextColor(Color.GREEN);
+                                } else {
+                                    textCompareToPreviousLap.setText("▲");
+                                    textCompareToPreviousLap.setTextColor(Color.RED);
+                                }
+                            } catch (Exception e) {
+                                finish();
                             }
                         }
                     }
                 }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    textLaps.setText("Error!");
+                    textLaps.setText("Server down!");
                 }
         });
 
@@ -101,6 +108,17 @@ public class MainActivity extends WearableActivity {
             }
         }, 0, 5000);
 
+        // Configure a gesture detector
+        textLaps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, LapTimes.class);
+                Bundle bundle = new Bundle();
+                bundle.putStringArray("laps", laps);
+                i.putExtras(bundle);
+                startActivity(i);
+            }
+        });
         // Enables Always-on
         setAmbientEnabled();
     }
@@ -137,5 +155,4 @@ public class MainActivity extends WearableActivity {
         Sensor mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
         mSensorManager.registerListener(hrEventListener, mHeartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
-
 }
