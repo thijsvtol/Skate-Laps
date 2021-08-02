@@ -1,4 +1,4 @@
-package com.example.skatelaps;
+package com.wearos.skatelaps;
 
 import androidx.appcompat.app.AppCompatActivity;
 

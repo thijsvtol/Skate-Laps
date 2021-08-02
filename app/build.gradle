@@ -7,7 +7,7 @@ android {
     buildToolsVersion '30'
 
     defaultConfig {
-        applicationId "com.example.skatelaps"
+        applicationId "com.wearos.skatelaps"
         minSdkVersion 25
         targetSdkVersion 30
         versionCode 1

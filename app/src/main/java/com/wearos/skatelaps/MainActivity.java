@@ -1,4 +1,4 @@
-package com.example.skatelaps;
+package com.wearos.skatelaps;
 
 import android.content.Context;
 import android.content.Intent;
