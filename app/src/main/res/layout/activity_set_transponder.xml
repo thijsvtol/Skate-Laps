@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/dark_grey"
     android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".set_transponder"
+    tools:context=".SetTransponder"
     tools:deviceIds="wear">
 
     <LinearLayout
@@ -22,7 +22,8 @@
             android:ems="8"
             android:textAlignment="center"
             android:inputType="textShortMessage|numberSigned|textNoSuggestions|textCapCharacters"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:importantForAutofill="no" />
 
     </LinearLayout>
 
@@ -38,7 +39,7 @@
             android:layout_marginTop="110dp"
             android:background="@color/blue_a400"
             android:padding="@dimen/inner_frame_layout_padding"
-            android:text="Go!"
+            android:text="@string/start_activity"
             android:textAlignment="center" />
 
     </LinearLayout>

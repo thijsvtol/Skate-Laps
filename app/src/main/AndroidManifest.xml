@@ -30,7 +30,7 @@
             android:value="true" />
 
         <activity
-            android:name="com.wearos.skatelaps.set_transponder"
+            android:name="com.wearos.skatelaps.SetTransponder"
             android:label="@string/title_activity_set_transponder">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

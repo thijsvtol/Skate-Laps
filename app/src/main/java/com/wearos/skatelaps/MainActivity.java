@@ -32,7 +32,6 @@ public class MainActivity extends WearableActivity {
     private TextView textCompareToPreviousLap;
     private TextView textFastestLapTime;
     private Boolean isFirstRequest = true;
-    private EditText editTransponder;
     private String[] laps;
     SensorManager mSensorManager;
     HRListener hrEventListener;
@@ -52,7 +51,7 @@ public class MainActivity extends WearableActivity {
         textCompareToPreviousLap = (TextView) findViewById(R.id.lap_time_compare);
         textFastestLapTime = (TextView) findViewById(R.id.fastest_lap_time_placeholder);
 
-        hrEventListener = new HRListener((TextView) findViewById(R.id.hr), (TextView) findViewById(R.id.hr_max), readingsQueue);
+        hrEventListener = new HRListener((TextView) findViewById(R.id.hr), (TextView) findViewById(R.id.hr_max), (TextView) findViewById(R.id.hr_avg), readingsQueue);
         getStepCount();
 
         final String url = "http://vinksite.com/LapsSubs/Cmon.php?uid=" + transponder;
@@ -75,14 +74,13 @@ public class MainActivity extends WearableActivity {
 
                             try {
                                 float lastLap = Float.parseFloat(laps[totalLaps - 1]);
-                                float secondLastLap = Float.parseFloat(laps[totalLaps - 2]);
                                 String fastestLap = result[3];
                                 textLaps.setText(String.valueOf(totalLaps));
                                 textLapTime.setText(String.valueOf(round(lastLap, 3)));
                                 textTotalTime.setText(secondsToMinutes(result[4]));
                                 textFastestLapTime.setText(String.valueOf(round(Float.parseFloat(fastestLap), 3)));
 
-                                if(lastLap < secondLastLap) {
+                                if(laps.length == 1 || lastLap < Float.parseFloat(laps[totalLaps - 2])) {
                                     textCompareToPreviousLap.setText("▼");
                                     textCompareToPreviousLap.setTextColor(Color.GREEN);
                                 } else {

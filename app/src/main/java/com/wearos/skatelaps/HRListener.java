@@ -13,12 +13,17 @@ public class HRListener implements SensorEventListener {
     private static final String TAG = "HRReadingsActivity";
     private TextView mTextHR;
     private TextView mTextHRMax;
-    private Integer maxHR = 0;
+    private TextView mTextHRAvg;
     private LinkedBlockingQueue readingsQueue;
 
-    public HRListener(TextView textHR, TextView textHRMax, LinkedBlockingQueue queue) {
+    private Integer maxHR = 0;
+    private Integer avgHRcounter = 0;
+    private Integer avgHR = 0;
+
+    public HRListener(TextView textHR, TextView textHRMax, TextView textHRAvg, LinkedBlockingQueue queue) {
         mTextHR = textHR;
         mTextHRMax = textHRMax;
+        mTextHRAvg = textHRAvg;
         readingsQueue = queue;
     }
 
@@ -26,10 +31,13 @@ public class HRListener implements SensorEventListener {
         if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
             int hr_value = (int)event.values[0];
             readingsQueue.offer(hr_value);
+            avgHRcounter++;
+            avgHR += hr_value;
             if (hr_value > maxHR) {
                 maxHR = hr_value;
-                mTextHRMax.setText("max. " + maxHR);
+                mTextHRMax.setText("Max. " + maxHR);
             }
+            mTextHRAvg.setText("Avg. " + (avgHR / avgHRcounter));
             mTextHR.setText(hr_value + "♥");
         }
         else {

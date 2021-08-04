@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class set_transponder extends WearableActivity {
+public class SetTransponder extends WearableActivity {
 
     public static final String myPref = "preferenceName";
 
@@ -40,7 +40,7 @@ public class set_transponder extends WearableActivity {
                 if (transponderNumber.length() == 8) {
                     writeToPreference(transponderNumber);
 
-                    Intent i = new Intent(set_transponder.this, MainActivity.class);
+                    Intent i = new Intent(SetTransponder.this, MainActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("transponder", transponderNumber);
                     i.putExtras(bundle);

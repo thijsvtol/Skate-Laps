@@ -2,8 +2,15 @@
     <string name="laps">Laps</string>
     <string name="laps_placeholder">0</string>
     <string name="lap_time">Lap time</string>
-    <string name="lap_time_placeholder">30.245</string>
-    <string name="lap_time_compare">▲</string>
+    <string name="lap_time_placeholder">--.---</string>
+    <string name="lap_time_compare"></string>
     <string name="total_time">Total time</string>
-    <string name="total_time_placeholder">2:30.23</string>
+    <string name="total_time_placeholder">-:--.--</string>
+    <string name="title_activity_set_transponder">Skate Laps</string>
+    <string name="best_lap_placeholder">--.---</string>
+    <string name="heart_rate_placeholder">---♥</string>
+    <string name="max_heart_rate_placeholder">Max. ---</string>
+    <string name="avg_heart_rate_placeholder">Avg. ---</string>
+    <string name="laps_header">Laps</string>
+    <string name="start_activity">Go!</string>
 </resources>
