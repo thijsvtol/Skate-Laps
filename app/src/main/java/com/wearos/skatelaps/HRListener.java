@@ -29,7 +29,7 @@ public class HRListener implements SensorEventListener {
 
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
-            int hr_value = (int)event.values[0];
+            int hr_value = (int) event.values[0];
             if (hr_value > 40) {
                 readingsQueue.offer(hr_value);
                 avgHRcounter++;
@@ -41,8 +41,7 @@ public class HRListener implements SensorEventListener {
                 mTextHRAvg.setText("Avg. " + (avgHR / avgHRcounter));
                 mTextHR.setText(hr_value + "♥");
             }
-        }
-        else {
+        } else {
             Log.d(TAG, "Unknown sensor type");
         }
     }

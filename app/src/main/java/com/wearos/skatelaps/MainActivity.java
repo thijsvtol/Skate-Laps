@@ -1,15 +1,18 @@
 package com.wearos.skatelaps;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.wearable.activity.WearableActivity;
+import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -26,6 +29,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class MainActivity extends WearableActivity {
 
+    private static final String TAG = "MainActivity";
+    SensorManager mSensorManager;
+    HRListener hrEventListener;
+    LinkedBlockingQueue readingsQueue = new LinkedBlockingQueue();
     private TextView textLaps;
     private TextView textLapTime;
     private TextView textTotalTime;
@@ -33,9 +40,12 @@ public class MainActivity extends WearableActivity {
     private TextView textFastestLapTime;
     private Boolean isFirstRequest = true;
     private String[] laps;
-    SensorManager mSensorManager;
-    HRListener hrEventListener;
-    LinkedBlockingQueue readingsQueue = new LinkedBlockingQueue();
+
+    private static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +61,7 @@ public class MainActivity extends WearableActivity {
         textCompareToPreviousLap = (TextView) findViewById(R.id.lap_time_compare);
         textFastestLapTime = (TextView) findViewById(R.id.fastest_lap_time_placeholder);
 
+        permissionRequest();
         hrEventListener = new HRListener((TextView) findViewById(R.id.hr), (TextView) findViewById(R.id.hr_max), (TextView) findViewById(R.id.hr_avg), readingsQueue);
         getStepCount();
 
@@ -67,7 +78,10 @@ public class MainActivity extends WearableActivity {
                         laps = result[12].split("#");
                         int totalLaps = laps.length;
 
-                        if(totalLaps > Integer.parseInt(textLaps.getText().toString()) || isFirstRequest) {
+                        if (totalLaps > Integer.parseInt(textLaps.getText().toString()) || isFirstRequest) {
+                            // Wake screen if it's in standby
+                            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+
                             // Get instance of Vibrator from current Context an vibrate 0.5s
                             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                             v.vibrate(500);
@@ -80,7 +94,7 @@ public class MainActivity extends WearableActivity {
                                 textTotalTime.setText(secondsToMinutes(result[4]));
                                 textFastestLapTime.setText(String.valueOf(round(Float.parseFloat(fastestLap), 3)));
 
-                                if(laps.length == 1 || lastLap < Float.parseFloat(laps[totalLaps - 2])) {
+                                if (laps.length == 1 || lastLap < Float.parseFloat(laps[totalLaps - 2])) {
                                     textCompareToPreviousLap.setText("▼");
                                     textCompareToPreviousLap.setTextColor(Color.GREEN);
                                 } else {
@@ -94,10 +108,10 @@ public class MainActivity extends WearableActivity {
                         }
                     }
                 }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    textLaps.setText("Server down!");
-                }
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                textLaps.setText("Server down!");
+            }
         });
 
         new Timer().schedule(new TimerTask() {
@@ -138,20 +152,25 @@ public class MainActivity extends WearableActivity {
         return hours < 1 ? m + ":" + seconds : hours + ":" + m + ":" + seconds;
     }
 
-    private static float round(float d, int decimalPlace) {
-        BigDecimal bd = new BigDecimal(Float.toString(d));
-        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
-        return bd.floatValue();
-    }
-
     protected void onStop() {
         mSensorManager.unregisterListener(hrEventListener);
         super.onStop();
     }
 
     private void getStepCount() {
-        mSensorManager = ((SensorManager)getSystemService(SENSOR_SERVICE));
+        mSensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
         Sensor mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
         mSensorManager.registerListener(hrEventListener, mHeartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    private void permissionRequest() {
+        if (checkSelfPermission(Manifest.permission.BODY_SENSORS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            requestPermissions(
+                    new String[]{Manifest.permission.BODY_SENSORS}, 100);
+        } else {
+            Log.d(TAG, "ALREADY GRANTED");
+        }
     }
 }

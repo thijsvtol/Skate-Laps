@@ -46,23 +46,21 @@ public class SetTransponder extends WearableActivity {
                     bundle.putString("transponder", transponderNumber);
                     i.putExtras(bundle);
                     startActivity(i);
-                }
-                else {
+                } else {
                     editTextTransponder.setError("Invalid transponder number!");
                 }
             }
         });
     }
-    public String getPreferenceValue()
-    {
-        SharedPreferences sp = getSharedPreferences(myPref,0);
-        String str = sp.getString("transponder","TheDefaultValueIfNoValueFoundOfThisKey");
+
+    public String getPreferenceValue() {
+        SharedPreferences sp = getSharedPreferences(myPref, 0);
+        String str = sp.getString("transponder", "TheDefaultValueIfNoValueFoundOfThisKey");
         return str;
     }
 
-    public void writeToPreference(String thePreference)
-    {
-        SharedPreferences.Editor editor = getSharedPreferences(myPref,0).edit();
+    public void writeToPreference(String thePreference) {
+        SharedPreferences.Editor editor = getSharedPreferences(myPref, 0).edit();
         editor.putString("transponder", thePreference);
         editor.commit();
     }

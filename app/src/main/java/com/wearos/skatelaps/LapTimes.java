@@ -1,9 +1,9 @@
 package com.wearos.skatelaps;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LapTimes extends AppCompatActivity {
 
@@ -17,9 +17,9 @@ public class LapTimes extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         final String[] laps = bundle.getStringArray("laps");
         String allLaps = "";
-        for(int i = 0; i < laps.length; i++) {
+        for (int i = 0; i < laps.length; i++) {
             String space = i < 10 ? "          " : "            ";
-            allLaps +=  i + 1 + space + laps[i] + "\n";
+            allLaps += i + 1 + space + laps[i] + "\n";
         }
         allLaps += "\n";
         textLaps = (TextView) findViewById(R.id.scrollLaps);
