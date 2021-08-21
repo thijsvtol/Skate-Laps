@@ -20,10 +20,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
             android:ems="8"
+            android:importantForAutofill="no"
+            android:inputType="textShortMessage"
             android:textAlignment="center"
-            android:inputType="textShortMessage|numberSigned|textNoSuggestions|textCapCharacters"
-            android:textSize="25sp"
-            android:importantForAutofill="no" />
+            android:textSize="25sp" />
 
     </LinearLayout>
 

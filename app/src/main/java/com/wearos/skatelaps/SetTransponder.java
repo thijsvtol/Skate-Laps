@@ -36,6 +36,7 @@ public class SetTransponder extends WearableActivity {
                 transponderNumber = transponderNumber.contains("-") ? transponderNumber :
                         transponderNumber.substring(0, 2) + "-" + transponderNumber.substring(2);
                 System.out.println(transponderNumber);
+                transponderNumber.toUpperCase();
 
                 if (transponderNumber.length() == 8) {
                     writeToPreference(transponderNumber);

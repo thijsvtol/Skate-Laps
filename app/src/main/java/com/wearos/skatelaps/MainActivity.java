@@ -90,6 +90,7 @@ public class MainActivity extends WearableActivity {
                             } catch (Exception e) {
                                 finish();
                             }
+                            isFirstRequest = false;
                         }
                     }
                 }, new Response.ErrorListener() {
