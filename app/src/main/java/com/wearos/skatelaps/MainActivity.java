@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.os.Vibrator;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
@@ -40,6 +41,7 @@ public class MainActivity extends WearableActivity {
     private TextView textFastestLapTime;
     private Boolean isFirstRequest = true;
     private String[] laps;
+    private String currentDate;
 
     private static float round(float d, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(d));
@@ -68,6 +70,9 @@ public class MainActivity extends WearableActivity {
         final String url = "http://vinksite.com/LapsSubs/Cmon.php?uid=" + transponder;
         final RequestQueue queue = Volley.newRequestQueue(this);
 
+        // Enables Always-on
+        setAmbientEnabled();
+
         // Request a string response from the provided URL.
         final StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -78,7 +83,7 @@ public class MainActivity extends WearableActivity {
                         laps = result[12].split("#");
                         int totalLaps = laps.length;
 
-                        if (totalLaps > Integer.parseInt(textLaps.getText().toString()) || isFirstRequest) {
+                        if (totalLaps > Integer.parseInt(textLaps.getText().toString()) || isFirstRequest || !result[0].equals(currentDate)) {
                             // Wake screen if it's in standby
                             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
@@ -89,6 +94,7 @@ public class MainActivity extends WearableActivity {
                             try {
                                 float lastLap = Float.parseFloat(laps[totalLaps - 1]);
                                 String fastestLap = result[3];
+                                currentDate = result[0];
                                 textLaps.setText(String.valueOf(totalLaps));
                                 textLapTime.setText(String.valueOf(round(lastLap, 3)));
                                 textTotalTime.setText(secondsToMinutes(result[4]));
@@ -132,8 +138,6 @@ public class MainActivity extends WearableActivity {
                 startActivity(i);
             }
         });
-        // Enables Always-on
-        setAmbientEnabled();
     }
 
     private String secondsToMinutes(String seconds) {
