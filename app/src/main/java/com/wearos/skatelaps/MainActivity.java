@@ -123,7 +123,7 @@ public class MainActivity extends WearableActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 noConnection.setText("No connection");
-                period = 1000;
+                period = 5000;
             }
         });
 
