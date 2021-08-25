@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.os.Vibrator;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
@@ -35,6 +34,7 @@ public class MainActivity extends WearableActivity {
     HRListener hrEventListener;
     LinkedBlockingQueue readingsQueue = new LinkedBlockingQueue();
     private TextView textLaps;
+    private TextView noConnection;
     private TextView textLapTime;
     private TextView textTotalTime;
     private TextView textCompareToPreviousLap;
@@ -42,6 +42,7 @@ public class MainActivity extends WearableActivity {
     private Boolean isFirstRequest = true;
     private String[] laps;
     private String currentDate;
+    private Integer period = 5000;
 
     private static float round(float d, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(d));
@@ -58,6 +59,7 @@ public class MainActivity extends WearableActivity {
         final String transponder = bundle.getString("transponder");
 
         textLaps = (TextView) findViewById(R.id.laps_placeholder);
+        noConnection = (TextView) findViewById(R.id.no_connection);
         textLapTime = (TextView) findViewById(R.id.lap_time_placeholder);
         textTotalTime = (TextView) findViewById(R.id.total_time_placeholder);
         textCompareToPreviousLap = (TextView) findViewById(R.id.lap_time_compare);
@@ -78,12 +80,12 @@ public class MainActivity extends WearableActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
+                        noConnection.setText("");
                         String[] result = response.split(";");
                         laps = result[12].split("#");
                         int totalLaps = laps.length;
 
-                        if (totalLaps > Integer.parseInt(textLaps.getText().toString()) || isFirstRequest || !result[0].equals(currentDate)) {
+                        if (totalLaps > Integer.parseInt(textLaps.getText().toString()) || isFirstRequest || !result[10].equals(currentDate)) {
                             // Wake screen if it's in standby
                             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
@@ -94,7 +96,7 @@ public class MainActivity extends WearableActivity {
                             try {
                                 float lastLap = Float.parseFloat(laps[totalLaps - 1]);
                                 String fastestLap = result[3];
-                                currentDate = result[0];
+                                currentDate = result[10];
                                 textLaps.setText(String.valueOf(totalLaps));
                                 textLapTime.setText(String.valueOf(round(lastLap, 3)));
                                 textTotalTime.setText(secondsToMinutes(result[4]));
@@ -108,15 +110,20 @@ public class MainActivity extends WearableActivity {
                                     textCompareToPreviousLap.setTextColor(Color.RED);
                                 }
                             } catch (Exception e) {
+                                noConnection.setText("Error!");
                                 finish();
                             }
                             isFirstRequest = false;
+                            period = 20000;
+                        } else {
+                            period = 5000;
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                textLaps.setText("Server down!");
+                noConnection.setText("No connection");
+                period = 1000;
             }
         });
 
@@ -125,7 +132,7 @@ public class MainActivity extends WearableActivity {
             public void run() {
                 queue.add(stringRequest);
             }
-        }, 0, 5000);
+        }, 0, period);
 
         // Configure a gesture detector
         textLaps.setOnClickListener(new View.OnClickListener() {
@@ -177,4 +184,5 @@ public class MainActivity extends WearableActivity {
             Log.d(TAG, "ALREADY GRANTED");
         }
     }
+
 }

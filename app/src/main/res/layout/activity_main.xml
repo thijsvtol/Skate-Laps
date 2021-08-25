@@ -11,6 +11,16 @@
     android:keepScreenOn="true">
 
     <!--Total laps-->
+    <TextView
+        android:id="@+id/no_connection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="165dp"
+        android:textAlignment="center"
+        android:textColor="@color/red_a200"
+        android:textStyle="bold"
+        android:textSize="12sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
